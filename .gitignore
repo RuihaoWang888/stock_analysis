@@ -11,3 +11,6 @@ stock_project/img/
 
 # Mac系统垃圾文件
 .DS_Store
+
+#虚拟环境
+venv_stock/
