@@ -79,3 +79,26 @@ AND 只能放在 WHERE 里做条件，不能用来隔开查询字段，字段之
 AS 别名不能写到聚合函数 AVG() / SUM() 的括号内部
 HAVING 后面不能直接写字段名，需要写聚合函数或者聚合结果别名
 所有符号：逗号、大于小于号必须是英文符号
+
+
+## 八、DISTINCT 去重
+取出一列里面不重复的值
+```sql
+SELECT DISTINCT 列名 FROM 表名;
+
+LIKE 模糊查询 + 通配符
+%：匹配任意长度、任意字符（可以 0 个字符）
+_：匹配1 个任意字符
+
+--开头匹配
+SELECT date, close FROM stock_data WHERE date LIKE '2025-01%';
+
+--包含匹配（中间有）
+SELECT * FROM stock_data WHERE date LIKE '%-03-%';
+
+易错点
+LIKE 前面必须写字段名，不能写 WHERE * LIKE ...
+开头匹配：'关键词%'
+结尾匹配：'%关键词'
+任意位置包含：'%关键词%'
+数字等值判断优先用 =，不用 LIKE
