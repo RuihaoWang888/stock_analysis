@@ -102,3 +102,74 @@ LIKE 前面必须写字段名，不能写 WHERE * LIKE ...
 结尾匹配：'%关键词'
 任意位置包含：'%关键词%'
 数字等值判断优先用 =，不用 LIKE
+
+
+
+📖 SQL‑JOIN 多表连接（重难点）
+现在新增第二张数据表：company
+两张表关联依靠股票代码 stock_code（共同字段）
+表 1 stock_data（行情表，你一直用的）
+表格
+stock_code	date	open	close	volume	year
+001	2025‑01‑05	10.2	10.8	50000	2025
+表 2 company（公司信息表）
+表格
+stock_code	company_name	industry
+001	贵州茅台	消费
+002	宁德时代	新能源
+关联键：stock_code，两张表靠这个字段把数据拼在一起
+四种 JOIN
+1. INNER JOIN 内连接（最常用）
+只取出两边都匹配上的数据，两边都有才留下
+sql
+SELECT s.date, s.close, c.company_name, c.industry
+FROM stock_data s
+INNER JOIN company c
+ON s.stock_code = c.stock_code;
+s 是 stock_data 的别名；c 是 company 的别名；ON 后面写匹配条件
+2. LEFT JOIN 左连接（超级高频）
+左边表全部保留，右边匹配不到的字段填 NULL
+sql
+SELECT s.date, s.close, c.company_name
+FROM stock_data s
+LEFT JOIN company c
+ON s.stock_code = c.stock_code;
+3. RIGHT JOIN 右连接
+右边表全部保留，左边匹配不到填 NULL
+实际工作 LEFT JOIN 用的远多于 RIGHT JOIN
+4. FULL JOIN 全连接
+左右两边所有记录都保留，无匹配填 NULL。MySQL 不支持
+口诀区分
+INNER JOIN：取交集，两边都有才出现
+LEFT JOIN：以左表为准，左表一条不能少
+
+顺序口诀：FROM → JOIN … ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT
+
+## 十、多表查询 JOIN连接查询
+两张表：
+stock_data s（行情表）
+company c（公司信息表）
+关联字段：stock_code（股票代码）
+
+### 1. INNER JOIN 内连接
+只保留两张表匹配成功的数据（交集）
+语法：
+```sql
+SELECT 字段
+FROM 表1 别名1
+INNER JOIN 表2 别名2
+ON 表1.关联字段 = 表2.关联字段;
+
+2. LEFT JOIN 左连接
+以左边的表为基准，左表所有数据全部保留，右表匹配不到的数据显示 NULL
+SELECT 字段
+FROM 左表 别名1
+LEFT JOIN 右表 别名2
+ON 关联条件;
+
+重要书写顺序
+FROM → JOIN … ON → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT
+易错点
+ON 后面只能写两张表关联条件，过滤条件放到 WHERE
+表起了别名之后，全文档都要用别名访问字段 s.date，不能再写 stock_data.date
+GROUP BY 分组时，SELECT 里非聚合的字段，必须出现在 GROUP BY 后面
