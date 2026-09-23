@@ -24,7 +24,7 @@ def main():
             "high,low,"
             "close,volume",
             start_date="2024-01-01",
-            frequency="D",
+            frequency="d",
             adjustflag = "2")
 
         if rs.error_code != '0':
@@ -102,7 +102,7 @@ def main():
         plt.plot(df["日期"], df["收盘"], label="茅台-收盘价", color="#2E86AB", linewidth=1.2)
 
         # 图表标题、坐标轴标签
-        plt.title("贵州茅台 收盘价走势图")
+        plt.title("茅台 收盘价走势图")
         plt.xlabel("日期")
         plt.ylabel("价格(元)")
         plt.legend()
